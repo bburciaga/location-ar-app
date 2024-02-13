@@ -12,17 +12,21 @@ function Box(props) {
 
   React.useEffect(() => {
     console.log(meshRef.current)
-    console.log(meshRef.current.getVertexPosition)
   }, [meshRef])
   // Set up state for the hovered and active state
   const [hovered, setHover] = useState(false)
   const [active, setActive] = useState(true)
   // Subscribe this component to the render-loop, rotate the mesh every frame
   useFrame((state, delta) => (meshRef.current.rotation.x += delta))
+  useFrame((state, delta) => (meshRef.current.rotation.y += delta))
+  useFrame((state, delta) => (meshRef.current.position.z = -10.2188944816589355))
+  useFrame((state, delta) => (meshRef.current.position.x = props.position[0]))
+  useFrame((state, delta) => (meshRef.current.position.y = props.position[1]))
+        
   // Return view, these are regular three.js elements expressed in JSX
   return (
     <mesh
-      {...props}
+      
       ref={meshRef}
       scale={1.5}
       onClick={(event) => setActive(!active)}
