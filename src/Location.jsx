@@ -20,8 +20,8 @@ function Box(props) {
   useFrame((state, delta) => (meshRef.current.rotation.x += delta))
   useFrame((state, delta) => (meshRef.current.rotation.y += delta))
   useFrame((state, delta) => (meshRef.current.position.z = -10.2188944816589355))
-  useFrame((state, delta) => (meshRef.current.position.x = props.position[0]))
-  useFrame((state, delta) => (meshRef.current.position.y = props.position[1]))
+  useFrame((state, delta) => (meshRef.current.position.x += props.position[0]))
+  useFrame((state, delta) => (meshRef.current.position.y += props.position[1]))
         
   // Return view, these are regular three.js elements expressed in JSX
   return (
