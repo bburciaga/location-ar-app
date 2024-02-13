@@ -41,7 +41,7 @@ function Box(props) {
 export default function Location ({children}) {
   const [initialized, setInitialized] = React.useState(false)
   const [initCoords, setInitCoords] = React.useState()
-  const [coords, setCoords] = React.useState()
+  const [coords, setCoords] = React.useState({x: 0, y: 0})
 
   React.useEffect(() => {
     console.log('initial coord', initCoords)
@@ -54,13 +54,13 @@ export default function Location ({children}) {
   const { reset } = useTimeout(() => {
     navigator.geolocation.getCurrentPosition(function(position) {
       try {
-        console.log(position.coords)
         const {latitude, longitude} = position.coords
         const xy = merc.fromLatLngToPoint({lat: latitude, lng: longitude})
         if (!initialized) {
           setInitCoords({ x: xy.x, y: xy.y})
           setInitialized(true)
         } else {
+          console.log('presetter of xy',xy)
           setCoords({
             x: initCoords.x - xy.x,
             y: initCoords.y - xy.y
@@ -74,32 +74,40 @@ export default function Location ({children}) {
   }, 2000)
 
   return (
-    <ARCanvas
-    gl={{
-      antialias: false,
-      powerPreference: "default",
-      physicallyCorrectLights: true,
-    }}
-      onCreated={({ gl }) => {
-        console.log(gl)
-        gl.setSize(window.innerWidth, window.innerHeight)
-      }}>
-      <ambientLight intensity={Math.PI / 2} />
-      <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} decay={0} intensity={Math.PI} />
-      <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI} />
-      <Box 
-      frustumCulled={false}
-      position={undefined !== coords ? [
-        coords.x,
-        coords.y,
-        -10.2188944816589355
-      ] : [
-        -0.3376249194145191,
-        -2.2927881717681884,
-        -10.2188944816589355
-      ]
-      }/>
-    </ARCanvas>
+    <div style={{position: 'relative',height: '100%', width: '100%'}}>
+      <div style={{
+        lineHeight: '1em',
+        textAlign: 'left',
+        fontSize: '8em',
+        wordBreak: 'break-word',
+        position: 'absolute',
+        top: '0',
+        left: '0',
+        width: '100%',
+        height: '100%'}}>x:{coords.x} y:{coords.y}</div>
+      <ARCanvas
+      gl={{
+        antialias: false,
+        powerPreference: "default",
+        physicallyCorrectLights: true,
+      }}
+        onCreated={({ gl }) => {
+          console.log(gl)
+          gl.setSize(window.innerWidth, window.innerHeight)
+        }}>
+        <ambientLight intensity={Math.PI / 2} />
+        <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} decay={0} intensity={Math.PI} />
+        <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI} />
+        <Box 
+        frustumCulled={false}
+        position={[
+          coords.x,
+          coords.y,
+          -10.2188944816589355
+        ]
+        }/>
+      </ARCanvas>
+    </div>
   )
 }
 

@@ -31,6 +31,8 @@ function ARCanvas({
     <Canvas
       events={eventManagerFactory}
       camera={arEnabled ? { position: [0, 0, 0] } : props.camera}
+      style={{ pointerEvents: 'none' }}
+
       {...props}>
       {arEnabled ? (
         <AR
