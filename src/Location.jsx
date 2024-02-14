@@ -42,7 +42,7 @@ function Box(props) {
 export default function Location ({children}) {
   const [initialized, setInitialized] = React.useState(false)
   const [initialPos, setInitialPos] = React.useState({lat: 0, lng: 0})
-  const [initCoords, setInitCoords] = React.useState({x: 0, y:0})
+  const [dist, setDist] = React.useState(0)
   const [coords, setCoords] = React.useState({x: 0, y: 0})
 
   React.useEffect(() => {
@@ -65,6 +65,7 @@ export default function Location ({children}) {
           setInitialPos({lat: latitude, lng: longitude})
           setInitialized(true)
         } else {
+          setDist(calculateDistance(initialPos, {lat: latitude, lng: longitude}))
           const xyInit = merc.fromLatLngToPoint({lat: initialPos.lat, lng: initialPos.lng})
           const xy = merc.fromLatLngToPoint({lat: latitude, lng: longitude})
           setCoords({x: xyInit.x-xy.x, y: (xyInit.y-xy.y) * 1000})
@@ -89,7 +90,10 @@ export default function Location ({children}) {
         width: '100%',
       height: '100%'}}>x:{coords.x}
       <br />
-      y:{coords.y}</div>
+      y:{coords.y}
+      <br />
+      dist: {dist} m
+    </div>
       <ARCanvas
       position={[0, 0, 0]}
       gl={{
@@ -146,3 +150,19 @@ export default function Location ({children}) {
         ]} />
       </ARMarker>
       */
+function calculateDistance(coord1, coord2) {
+  const RADIUS_OF_EARTH = 6371000; // meters
+  const dLat = degToRad(coord2.lat - coord1.lat);
+  const dLon = degToRad(coord2.lng - coord1.lng);
+
+  const a = Math.sin(dLat / 2)** 2 + Math.cos(degToRad(coord1.lat))
+    * Math.cos(degToRad(coord2.lat)) * Math.sin(dLon / 2) ** 2;
+ 
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+  return RADIUS_OF_EARTH * c;
+}
+
+function degToRad(deg) {
+  return deg * (Math.PI / 180);
+}
