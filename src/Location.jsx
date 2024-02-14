@@ -67,7 +67,7 @@ export default function Location ({children}) {
         } else {
           const xyInit = merc.fromLatLngToPoint({lat: initialPos.lat, lng: initialPos.lng})
           const xy = merc.fromLatLngToPoint({lat: latitude, lng: longitude})
-          setCoords({x: xyInit.x-xy.x, y: xyInit.y-xy.y})
+          setCoords({x: xyInit.x-xy.x, y: (xyInit.y-xy.y) * 100000})
         }
       } catch (_e) {
         console.log(_e)
@@ -107,9 +107,9 @@ export default function Location ({children}) {
         <Box 
         frustumCulled={false}
         position={[
-          coords.x,
+          0,
           0, // DO NOT CHANGE
-          -1* coords.y
+          coords.y
         ]
         }/>
       </ARCanvas>
