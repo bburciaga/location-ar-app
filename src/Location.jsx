@@ -109,7 +109,7 @@ export default function Location ({children}) {
         position={[
           coords.x,
           0, // DO NOT CHANGE
-          coords.y
+          -1* coords.y
         ]
         }/>
       </ARCanvas>
