@@ -1,5 +1,6 @@
 import React, { useRef, useState, Suspense } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
+import { LocationBased } from '@ar-js-org/ar.js'
 import ARCanvas from './ARCanvas'
 import ARMarker from './ARMarker'
 import useTimeout from './useTimeout'
@@ -20,8 +21,8 @@ function Box(props) {
   useFrame((state, delta) => (meshRef.current.rotation.x += delta))
   useFrame((state, delta) => (meshRef.current.rotation.y += delta))
   useFrame((state, delta) => (meshRef.current.position.z = -10.2188944816589355))
-  useFrame((state, delta) => (meshRef.current.position.x += props.position[0]))
-  useFrame((state, delta) => (meshRef.current.position.y += props.position[1]))
+  useFrame((state, delta) => (meshRef.current.position.x = props.position[0]))
+  useFrame((state, delta) => (meshRef.current.position.y = props.position[1]))
         
   // Return view, these are regular three.js elements expressed in JSX
   return (
@@ -62,8 +63,8 @@ export default function Location ({children}) {
         } else {
           console.log('presetter of xy',xy)
           setCoords({
-            x: initCoords.x - xy.x,
-            y: initCoords.y - xy.y
+            x: xy.x - initCoords.x,
+            y: xy.y - initCoords.y
           })
         }
       } catch (_e) {
@@ -71,20 +72,22 @@ export default function Location ({children}) {
       }
     })
     reset()
-  }, 2000)
+  }, 4000)
 
   return (
     <div style={{position: 'relative',height: '100%', width: '100%'}}>
       <div style={{
         lineHeight: '1em',
         textAlign: 'left',
-        fontSize: '8em',
+        fontSize: '2em',
         wordBreak: 'break-word',
         position: 'absolute',
         top: '0',
         left: '0',
         width: '100%',
-        height: '100%'}}>x:{coords.x} y:{coords.y}</div>
+      height: '100%'}}>x:{coords.x}
+      <br />
+      y:{coords.y}</div>
       <ARCanvas
       gl={{
         antialias: false,
