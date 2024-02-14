@@ -20,7 +20,7 @@ function Box(props) {
   // Subscribe this component to the render-loop, rotate the mesh every frame
   useFrame((state, delta) => (meshRef.current.rotation.x += delta))
   useFrame((state, delta) => (meshRef.current.rotation.y += delta))
-  useFrame((state, delta) => (meshRef.current.position.z = -10.2188944816589355))
+  useFrame((state, delta) => (meshRef.current.position.z = props.position[2]))
   useFrame((state, delta) => (meshRef.current.position.x = props.position[0]))
   useFrame((state, delta) => (meshRef.current.position.y = props.position[1]))
         
@@ -41,6 +41,7 @@ function Box(props) {
 
 export default function Location ({children}) {
   const [initialized, setInitialized] = React.useState(false)
+  const [initialPos, setInitialPos] = React.useState({lat: 0, lng: 0})
   const [initCoords, setInitCoords] = React.useState({x: 0, y:0})
   const [coords, setCoords] = React.useState({x: 0, y: 0})
 
@@ -56,23 +57,22 @@ export default function Location ({children}) {
     navigator.geolocation.getCurrentPosition(function(position) {
       try {
         const {latitude, longitude} = position.coords
-        const xy = merc.fromLatLngToPoint({lat: latitude, lng: longitude})
+        // initial is 0,0
+        // coord update
+        // new coords = {0 + coord.x, 0 + coord.y}
         if (!initialized) {
-          setInitCoords({ x: xy.x, y: xy.y})
+          setInitialPos({lat: latitude, lng: longitude})
           setInitialized(true)
         } else {
-          console.log('presetter of xy',xy)
-          setCoords({
-            x: xy.x - initCoords.x,
-            y: xy.y - initCoords.y
-          })
+          const xy = merc.fromLatLngToPoint({lat: initialPos.lat - latitude, lng: initialPos.lng - longitude})
+          setCoords({x: xy.x, y: xy.y})
         }
       } catch (_e) {
         console.log(_e)
       }
     })
     reset()
-  }, 4000)
+  }, 500)
 
   return (
     <div style={{position: 'relative',height: '100%', width: '100%'}}>
@@ -89,7 +89,7 @@ export default function Location ({children}) {
       <br />
       y:{coords.y}</div>
       <ARCanvas
-      position={[coords.x, coords.y, 0]}
+      position={[0, 0, 0]}
       gl={{
         antialias: false,
         powerPreference: "default",
@@ -105,9 +105,9 @@ export default function Location ({children}) {
         <Box 
         frustumCulled={false}
         position={[
-          initCoords.x,
-          initCoords.y,
-          0
+          coords.x,
+          0, // DO NOT CHANGE
+          coords.y
         ]
         }/>
       </ARCanvas>
