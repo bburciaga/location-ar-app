@@ -46,8 +46,8 @@ export default function Location ({children}) {
   const [coords, setCoords] = React.useState({x: 0, y: 0})
 
   React.useEffect(() => {
-    console.log('initial coord', initCoords)
-  }, [initCoords])
+    console.log('initial pos', initialPos)
+  }, [initialPos])
 
   React.useEffect(() => {
     console.log('current coords', coords)
@@ -61,11 +61,13 @@ export default function Location ({children}) {
         // coord update
         // new coords = {0 + coord.x, 0 + coord.y}
         if (!initialized) {
+          console.log(latitude, longitude)
           setInitialPos({lat: latitude, lng: longitude})
           setInitialized(true)
         } else {
-          const xy = merc.fromLatLngToPoint({lat: initialPos.lat - latitude, lng: initialPos.lng - longitude})
-          setCoords({x: xy.x, y: xy.y})
+          const xyInit = merc.fromLatLngToPoint({lat: initialPos.lat, lng: initialPos.lng})
+          const xy = merc.fromLatLngToPoint({lat: latitude, lng: longitude})
+          setCoords({x: xyInit.x-xy.x, y: xyInit.y-xy.y})
         }
       } catch (_e) {
         console.log(_e)
