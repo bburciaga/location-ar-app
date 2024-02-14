@@ -42,40 +42,35 @@ function Box(props) {
 export default function Location ({children}) {
   const [initialized, setInitialized] = React.useState(false)
   const [initialPos, setInitialPos] = React.useState({lat: 0, lng: 0})
-  const [dist, setDist] = React.useState(0)
-  const [coords, setCoords] = React.useState({x: 0, y: 0})
+  const [coords, setCoords] = React.useState({x: 0, y: 0, distance: 0})
 
   React.useEffect(() => {
-    console.log('initial pos', initialPos)
+    console.log('Initial Position',initialPos)
   }, [initialPos])
 
   React.useEffect(() => {
-    console.log('current coords', coords)
+    console.log('Current Coordinates', coords)
   }, [coords])
 
   const { reset } = useTimeout(() => {
     navigator.geolocation.getCurrentPosition(function(position) {
       try {
         const {latitude, longitude} = position.coords
-        // initial is 0,0
-        // coord update
-        // new coords = {0 + coord.x, 0 + coord.y}
         if (!initialized) {
-          console.log(latitude, longitude)
           setInitialPos({lat: latitude, lng: longitude})
           setInitialized(true)
         } else {
-          setDist(calculateDistance(initialPos, {lat: latitude, lng: longitude}))
+          const d = calculateDistance(initialPos, {lat: latitude, lng: longitude})
           const xyInit = merc.fromLatLngToPoint({lat: initialPos.lat, lng: initialPos.lng})
           const xy = merc.fromLatLngToPoint({lat: latitude, lng: longitude})
-          setCoords({x: xyInit.x-xy.x, y: (xyInit.y-xy.y) * 1000})
+          setCoords({x: xyInit.x-xy.x, y: (xyInit.y-xy.y) * 1000, distance: d})
         }
       } catch (_e) {
         console.log(_e)
       }
     })
     reset()
-  }, 500)
+  }, 2000)
 
   return (
     <div style={{position: 'relative',height: '100%', width: '100%'}}>
@@ -92,7 +87,7 @@ export default function Location ({children}) {
       <br />
       y:{coords.y}
       <br />
-      dist: {dist} m
+      dist: {coords.distance} m
     </div>
       <ARCanvas
       position={[0, 0, 0]}
