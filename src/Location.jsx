@@ -41,7 +41,7 @@ function Box(props) {
 
 export default function Location ({children}) {
   const [initialized, setInitialized] = React.useState(false)
-  const [initCoords, setInitCoords] = React.useState()
+  const [initCoords, setInitCoords] = React.useState({x: 0, y:0})
   const [coords, setCoords] = React.useState({x: 0, y: 0})
 
   React.useEffect(() => {
@@ -79,7 +79,7 @@ export default function Location ({children}) {
       <div style={{
         lineHeight: '1em',
         textAlign: 'left',
-        fontSize: '2em',
+        fontSize: '4em',
         wordBreak: 'break-word',
         position: 'absolute',
         top: '0',
@@ -89,6 +89,7 @@ export default function Location ({children}) {
       <br />
       y:{coords.y}</div>
       <ARCanvas
+      position={[coords.x, coords.y, 0]}
       gl={{
         antialias: false,
         powerPreference: "default",
@@ -104,9 +105,9 @@ export default function Location ({children}) {
         <Box 
         frustumCulled={false}
         position={[
-          coords.x,
-          coords.y,
-          -10.2188944816589355
+          initCoords.x,
+          initCoords.y,
+          0
         ]
         }/>
       </ARCanvas>
@@ -115,6 +116,7 @@ export default function Location ({children}) {
 }
 
   /**
+          -10.2188944816589355
       <ARMarker
         params={{ smooth: true }}
         type={"pattern"}
