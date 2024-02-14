@@ -67,7 +67,7 @@ export default function Location ({children}) {
         } else {
           const xyInit = merc.fromLatLngToPoint({lat: initialPos.lat, lng: initialPos.lng})
           const xy = merc.fromLatLngToPoint({lat: latitude, lng: longitude})
-          setCoords({x: xyInit.x-xy.x, y: (xyInit.y-xy.y) * 100000})
+          setCoords({x: xyInit.x-xy.x, y: (xyInit.y-xy.y) * 1000})
         }
       } catch (_e) {
         console.log(_e)
