@@ -38,19 +38,6 @@ function Box(props) {
   )
 }
 
-function gyro () {
-    const gyroscope = new Gyroscope({ frequency: 60 });
-
-    gyroscope.addEventListener("reading", (_e) => {
-      console.log(`Angular velocity along the X-axis ${gyroscope.x}`);
-      console.log(`Angular velocity along the Y-axis ${gyroscope.y}`);
-      console.log(`Angular velocity along the Z-axis ${gyroscope.z}`);
-    });
-
-    gyroscope.start();
-
-    gyroscope.stop();
-}
 
 export default function Location ({children}) {
   const [initialized, setInitialized] = React.useState(false)
@@ -67,7 +54,6 @@ export default function Location ({children}) {
   }, [coords])
 
   const { reset } = useTimeout(() => {
-    gyro()
     navigator.geolocation.getCurrentPosition(function(position) {
       try {
         const {latitude, longitude} = position.coords
