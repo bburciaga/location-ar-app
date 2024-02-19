@@ -4,6 +4,7 @@ import { LocationBased } from '@ar-js-org/ar.js'
 import ARCanvas from './ARCanvas'
 import ARMarker from './ARMarker'
 import useTimeout from './useTimeout'
+import OrientationInfo from './orientation/OrientationInfo'
 
 import * as merc from 'mercator-projection'
 
@@ -44,7 +45,6 @@ export default function Location ({children}) {
   const [initialPos, setInitialPos] = React.useState({lat: 0, lng: 0})
   const [coords, setCoords] = React.useState({x: 0, y: 0, distance: 0})
 
-
   React.useEffect(() => {
     console.log('Initial Position',initialPos)
   }, [initialPos])
@@ -62,9 +62,7 @@ export default function Location ({children}) {
           setInitialized(true)
         } else {
           const d = calculateDistance(initialPos, {lat: latitude, lng: longitude})
-          const xyInit = merc.fromLatLngToPoint({lat: initialPos.lat, lng: initialPos.lng})
-          const xy = merc.fromLatLngToPoint({lat: latitude, lng: longitude})
-          setCoords({x: xyInit.x-xy.x, y: (xyInit.y-xy.y) * 1000, distance: d})
+          setCoords({x: 0, y: 0, distance: -1 * d})
         }
       } catch (_e) {
         console.log(_e)
@@ -84,9 +82,8 @@ export default function Location ({children}) {
         top: '0',
         left: '0',
         width: '100%',
-      height: '100%'}}>x:{coords.x}
-      <br />
-      y:{coords.y}
+      height: '100%'}}>
+      <OrientationInfo />
       <br />
       dist: {coords.distance} m
     </div>
@@ -109,7 +106,7 @@ export default function Location ({children}) {
         position={[
           0,
           0, // DO NOT CHANGE
-          -1 * coords.distance
+          coords.distance
         ]
         }/>
       </ARCanvas>
@@ -146,6 +143,7 @@ export default function Location ({children}) {
         ]} />
       </ARMarker>
       */
+
 function calculateDistance(coord1, coord2) {
   const RADIUS_OF_EARTH = 6371000; // meters
   const dLat = degToRad(coord2.lat - coord1.lat);
