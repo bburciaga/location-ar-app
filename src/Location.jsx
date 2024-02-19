@@ -1,10 +1,9 @@
-import React, { useRef, useState, Suspense } from 'react'
-import { Canvas, useFrame } from '@react-three/fiber'
-import { LocationBased } from '@ar-js-org/ar.js'
+import React, { useRef, useState } from 'react'
 import ARCanvas from './ARCanvas'
-import ARMarker from './ARMarker'
+
+import { calculateDistance } from './utils/geometry'
+import { useDeviceOrientation } from './orientation/useDeviceOrientation';
 import useTimeout from './useTimeout'
-import OrientationInfo from './orientation/OrientationInfo'
 
 import * as merc from 'mercator-projection'
 
@@ -44,14 +43,15 @@ export default function Location ({children}) {
   const [initialized, setInitialized] = React.useState(false)
   const [initialPos, setInitialPos] = React.useState({lat: 0, lng: 0})
   const [coords, setCoords] = React.useState({x: 0, y: 0, distance: 0})
+  const { orientation, requestAccess, revokeAccess, error } = useDeviceOrientation();
+
+  React.useEffect(() => {
+    console.log('orientation', orientation)
+  }, [orientation])
 
   React.useEffect(() => {
     console.log('Initial Position',initialPos)
   }, [initialPos])
-
-  React.useEffect(() => {
-    console.log('Current Coordinates', coords)
-  }, [coords])
 
   const { reset } = useTimeout(() => {
     navigator.geolocation.getCurrentPosition(function(position) {
@@ -83,7 +83,7 @@ export default function Location ({children}) {
         left: '0',
         width: '100%',
       height: '100%'}}>
-      <OrientationInfo />
+      orientation: {orientation ? orientation.x : 'null'}
       <br />
       dist: {coords.distance} m
     </div>
@@ -112,51 +112,4 @@ export default function Location ({children}) {
       </ARCanvas>
     </div>
   )
-}
-
-  /**
-          -10.2188944816589355
-      <ARMarker
-        params={{ smooth: true }}
-        type={"pattern"}
-        patternUrl={"/data/patt.hiro"}
-        onMarkerFound={() => {
-          console.log("Marker Found")
-        }}>
-        <Box />
-      </ARMarker>
-      <ambientLight intensity={Math.PI / 2} />
-      <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} decay={0} intensity={Math.PI} />
-      <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI} />
-      <ARMarker
-      params={{ smooth: true }}
-      type={"pattern"}
-      patternUrl={"data/patt.hiro"}
-      onMarkerFound={() => {
-        console.log("Marker Found")
-      }}>
-        <Box position={[-1.2, 0, 0]} />
-        <Box position={[
-          -0.3376249194145191,
-          -2.2927881717681884,
-          -10.2188944816589355
-        ]} />
-      </ARMarker>
-      */
-
-function calculateDistance(coord1, coord2) {
-  const RADIUS_OF_EARTH = 6371000; // meters
-  const dLat = degToRad(coord2.lat - coord1.lat);
-  const dLon = degToRad(coord2.lng - coord1.lng);
-
-  const a = Math.sin(dLat / 2)** 2 + Math.cos(degToRad(coord1.lat))
-    * Math.cos(degToRad(coord2.lat)) * Math.sin(dLon / 2) ** 2;
- 
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
-  return RADIUS_OF_EARTH * c;
-}
-
-function degToRad(deg) {
-  return deg * (Math.PI / 180);
 }
