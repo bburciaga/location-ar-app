@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react'
 
-import ARCanvas from './ARCanvas'
+import ARCanvas from './ar/ARCanvas'
 import { calculateDistance } from './utils/geometry'
 import { useDeviceOrientation } from './orientation/useDeviceOrientation';
 import useTimeout from './hooks/useTimeout'
