@@ -44,14 +44,9 @@ export default function Location ({children}) {
   const [initialized, setInitialized] = React.useState(false)
   const [initialPos, setInitialPos] = React.useState({lat: 0, lng: 0})
   const [coords, setCoords] = React.useState({x: 0, y: 0, distance: 0})
-  const [orientation, setOrientation] = React.useState({alpha: 0, beta: 0, gamma: 0})
-  window.addEventListener('deviceorientation', (event) => {
-    setOrientation({
-      alpha: event.alpha,
-      beta: event.beta,
-      gamma: event.gamma
-    })
-  })
+  const [orientation, setOrientation] = React.useState({alpha: 0, beta: 0, gamma: 0, count: 0})
+
+  window.addEventListener('deviceorientation', handleOrientation)
 
   React.useEffect(() => {
     console.log('Initial Position',initialPos)
@@ -72,8 +67,19 @@ export default function Location ({children}) {
         console.log(_e)
       }
     })
+
     reset()
   }, 2000)
+
+  function handleOrientation(event) {
+    console.log('here')
+    setOrientation({
+      alpha: event.alpha,
+      beta: event.beta,
+      gamma: event.gamma,
+      count: orientation.count + 1
+    })
+  }
 
   return (
     <div style={{position: 'relative',height: '100%', width: '100%'}}>
@@ -92,6 +98,8 @@ export default function Location ({children}) {
       beta: {orientation.beta}
       <br />
       gamma: {orientation.gamma}
+      <br />
+      count: {orientation.count}
       <br />
       dist: {coords.distance} m
     </div>
