@@ -1,29 +1,30 @@
 import React, { useRef, useState } from 'react'
-import ARCanvas from './ARCanvas'
 
+import ARCanvas from './ARCanvas'
 import { calculateDistance } from './utils/geometry'
 import { useDeviceOrientation } from './orientation/useDeviceOrientation';
-import useTimeout from './useTimeout'
+import useTimeout from './hooks/useTimeout'
+import handleOrientation from './utils/orientation'
 
 import * as merc from 'mercator-projection'
 
 function Box(props) {
   // This reference will give us direct access to the mesh
   const meshRef = useRef()
-
-  React.useEffect(() => {
-    console.log(meshRef.current)
-  }, [meshRef])
-  // Set up state for the hovered and active state
   const [hovered, setHover] = useState(false)
   const [active, setActive] = useState(true)
+
+  React.useEffect(() => {
+    //console.log(meshRef.current)
+  }, [meshRef])
+
+
   // Subscribe this component to the render-loop, rotate the mesh every frame
   // useFrame((state, delta) => (meshRef.current.rotation.x += delta)) // Rotation in x axis
   // useFrame((state, delta) => (meshRef.current.rotation.y += delta)) // Rotation in y axis
   //useFrame((state, delta) => (meshRef.current.position.z = props.position[2]))
   //useFrame((state, delta) => (meshRef.current.position.y = props.position[1]))
         
-  // Return view, these are regular three.js elements expressed in JSX
   return (
     <mesh
       {...props} 
@@ -44,10 +45,6 @@ export default function Location ({children}) {
   const [initialPos, setInitialPos] = React.useState({lat: 0, lng: 0})
   const [coords, setCoords] = React.useState({x: 0, y: 0, distance: 0})
   const { orientation, requestAccess, revokeAccess, error } = useDeviceOrientation();
-
-  React.useEffect(() => {
-    console.log('orientation', orientation)
-  }, [orientation])
 
   React.useEffect(() => {
     console.log('Initial Position',initialPos)
@@ -95,7 +92,6 @@ export default function Location ({children}) {
         physicallyCorrectLights: true,
       }}
         onCreated={({ gl }) => {
-          console.log(gl)
           gl.setSize(window.innerWidth, window.innerHeight)
         }}>
         <ambientLight intensity={Math.PI / 2} />
