@@ -5,6 +5,7 @@ import { calculateDistance } from './utils/geometry'
 import { useDeviceOrientation } from './orientation/useDeviceOrientation';
 import useTimeout from './hooks/useTimeout'
 import handleOrientation from './utils/orientation'
+import useGyroscope from 'react-hook-gyroscope'
 
 import * as merc from 'mercator-projection'
 
@@ -43,10 +44,7 @@ function Box(props) {
 export default function Location ({children}) {
   const [initialized, setInitialized] = React.useState(false)
   const [initialPos, setInitialPos] = React.useState({lat: 0, lng: 0})
-  const [coords, setCoords] = React.useState({x: 0, y: 0, distance: 0})
-  const [orientation, setOrientation] = React.useState({alpha: 0, beta: 0, gamma: 0, count: 0})
-
-  window.addEventListener('deviceorientation', handleOrientation)
+  const [coords, setCoords] = React.useState({x: 0, z: 0, distance: 0})
 
   React.useEffect(() => {
     console.log('Initial Position',initialPos)
@@ -60,8 +58,18 @@ export default function Location ({children}) {
           setInitialPos({lat: latitude, lng: longitude})
           setInitialized(true)
         } else {
+          // distance in lat exlusively
+          const d1 = calculateDistance(
+            { lat: latitude, lng: longitude },
+            { lat: initialPos.lat, lng: longitude }
+          )
+          const d2 = calculateDistance(
+            { lat: latitude, lng: longitude },
+            { lat: latitude, lng: initialPos.lng }
+          )
+          // distance in lng exclusively
           const d = calculateDistance(initialPos, {lat: latitude, lng: longitude})
-          setCoords({x: 0, y: 0, distance: -1 * d})
+          setCoords({x: d1, z: -1 * d2, distance: -1 * d})
         }
       } catch (_e) {
         console.log(_e)
@@ -70,16 +78,6 @@ export default function Location ({children}) {
 
     reset()
   }, 2000)
-
-  function handleOrientation(event) {
-    console.log('here')
-    setOrientation({
-      alpha: event.alpha,
-      beta: event.beta,
-      gamma: event.gamma,
-      count: orientation.count + 1
-    })
-  }
 
   return (
     <div style={{position: 'relative',height: '100%', width: '100%'}}>
@@ -93,13 +91,9 @@ export default function Location ({children}) {
         left: '0',
         width: '100%',
       height: '100%'}}>
-      alpha: {orientation.alpha}
+      alpha: {coords.x}
       <br />
-      beta: {orientation.beta}
-      <br />
-      gamma: {orientation.gamma}
-      <br />
-      count: {orientation.count}
+      beta: {coords.z}
       <br />
       dist: {coords.distance} m
     </div>
@@ -119,7 +113,7 @@ export default function Location ({children}) {
         <Box 
         frustumCulled={false}
         position={[
-          0,
+          coords.x,
           0, // DO NOT CHANGE
           coords.distance
         ]
