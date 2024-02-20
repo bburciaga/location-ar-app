@@ -44,7 +44,10 @@ export default function Location ({children}) {
   const [initialized, setInitialized] = React.useState(false)
   const [initialPos, setInitialPos] = React.useState({lat: 0, lng: 0})
   const [coords, setCoords] = React.useState({x: 0, y: 0, distance: 0})
-  const { orientation, requestAccess, revokeAccess, error } = useDeviceOrientation();
+  const [beta, setBeta] = React.useState(0)
+  window.addEventListener('deviceorientation', (event) => {
+    setBeta(event.beta)
+  })
 
   React.useEffect(() => {
     console.log('Initial Position',initialPos)
@@ -80,7 +83,7 @@ export default function Location ({children}) {
         left: '0',
         width: '100%',
       height: '100%'}}>
-      orientation: {orientation ? orientation.x : 'null'}
+      orientation: {beta ? beta : 'null'}
       <br />
       dist: {coords.distance} m
     </div>
