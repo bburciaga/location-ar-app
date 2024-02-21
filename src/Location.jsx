@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react'
+import {useFrame} from '@react-three/fiber'
 
 import ARCanvas from './ar/ARCanvas'
 import { calculateDistance } from './utils/geometry'
@@ -20,24 +21,23 @@ function Box(props) {
     //console.log(meshRef.current)
   }, [meshRef])
 
-
   // Subscribe this component to the render-loop, rotate the mesh every frame
-  // useFrame((state, delta) => (meshRef.current.rotation.x += delta)) // Rotation in x axis
-  // useFrame((state, delta) => (meshRef.current.rotation.y += delta)) // Rotation in y axis
+  //useFrame((state, delta) => (meshRef.current.rotation.x += delta)) // Rotation in x axis
+  useFrame((state, delta) => (meshRef.current.rotation.y += props.rotation.alpha)) // Rotation in y axis
   //useFrame((state, delta) => (meshRef.current.position.z = props.position[2]))
   //useFrame((state, delta) => (meshRef.current.position.y = props.position[1]))
         
   return (
-    <mesh
-      {...props} 
-      ref={meshRef}
-      scale={1.5}
-      onClick={(event) => setActive(!active)}
-      onPointerOver={(event) => setHover(true)}
-      onPointerOut={(event) => setHover(false)}>
-      <boxGeometry args={[1, 1, 1]} />
-      <meshStandardMaterial color={hovered ? 'hotpink' : 'orange'} />
-    </mesh>
+            <mesh
+              position={props.position}
+              ref={meshRef}
+              scale={1.5}
+              onClick={(event) => setActive(!active)}
+              onPointerOver={(event) => setHover(true)}
+              onPointerOut={(event) => setHover(false)}>
+              <boxGeometry args={[1, 1, 1]} />
+              <meshStandardMaterial color={hovered ? 'hotpink' : 'orange'} />
+            </mesh>
   )
 }
 
@@ -92,16 +92,6 @@ export default function Location ({children}) {
         left: '0',
         width: '100%',
       height: '100%'}}>
-      <DeviceOrientation>
-      {({ absolute, alpha, beta, gamma }) => (
-        <div>
-          {`Absolute: ${absolute}`}
-          {`Alpha: ${alpha}`}
-          {`Beta: ${beta}`}
-          {`Gamma: ${gamma}`}
-        </div>
-      )}
-      </DeviceOrientation>
       <br />
       dist: {coords.distance} m
     </div>
@@ -118,14 +108,21 @@ export default function Location ({children}) {
         <ambientLight intensity={Math.PI / 2} />
         <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} decay={0} intensity={Math.PI} />
         <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI} />
-        <Box 
-        frustumCulled={false}
-        position={[
-          coords.x,
-          0, // DO NOT CHANGE
-          coords.distance
-        ]
-        }/>
+        <DeviceOrientation>
+          {({ absolute, alpha, beta, gamma }) => {
+            return (
+              <Box 
+                rotation={{alpha: alpha, beta: beta, gamma: gamma}}
+                frustumCulled={false}
+                position={[
+                  0,
+                  0, // DO NOT CHANGE
+                  -10
+                ]}
+                />
+          )
+        }}
+      </DeviceOrientation>
       </ARCanvas>
     </div>
   )
