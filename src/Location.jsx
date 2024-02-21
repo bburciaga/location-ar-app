@@ -30,7 +30,9 @@ function Box(props) {
         
   return (
             <mesh
-            rotation={[Math.PI / props.rotation.alpha, 0, 0]}
+              rotation={[
+                props.rotation.alpha, 0, 0
+              ]}
               position={props.position}
               ref={meshRef}
               scale={1.5}
