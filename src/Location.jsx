@@ -6,6 +6,7 @@ import { useDeviceOrientation } from './orientation/useDeviceOrientation';
 import useTimeout from './hooks/useTimeout'
 import handleOrientation from './utils/orientation'
 import useGyroscope from 'react-hook-gyroscope'
+import DeviceOrientation from 'react-device-orientation'
 
 import * as merc from 'mercator-projection'
 
@@ -91,9 +92,16 @@ export default function Location ({children}) {
         left: '0',
         width: '100%',
       height: '100%'}}>
-      alpha: {coords.x}
-      <br />
-      beta: {coords.z}
+      <DeviceOrientation>
+      {({ absolute, alpha, beta, gamma }) => (
+        <div>
+          {`Absolute: ${absolute}`}
+          {`Alpha: ${alpha}`}
+          {`Beta: ${beta}`}
+          {`Gamma: ${gamma}`}
+        </div>
+      )}
+      </DeviceOrientation>
       <br />
       dist: {coords.distance} m
     </div>
