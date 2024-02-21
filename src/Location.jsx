@@ -31,7 +31,7 @@ function Box(props) {
   return (
             <mesh
               rotation={[
-                props.rotation.gamma, 0, 0
+                0, props.rotation.alpha, 0
               ]}
               position={props.position}
               ref={meshRef}
