@@ -15,10 +15,6 @@ import * as merc from 'mercator-projection'
  * @param {Object} has properties rotation and position
 */
 function Box(props) {
-  Box.propTypes = {
-    rotation: props.rotation,
-    position: props.position
-  }
   // This reference will give us direct access to the mesh
   const meshRef = useRef()
   const [hovered, setHover] = useState(false)
@@ -38,11 +34,11 @@ function Box(props) {
   return (
     <mesh
       rotation={[
-        Box.propTypes.rotation.beta * Math.PI / 90,
-        Box.propTypes.rotation.alpha * Math.PI / 90,
+        props.rotation.beta * Math.PI / 180,
+        props.rotation.alpha * Math.PI / 180,
         0
       ]}
-      position={Box.propTypes.position}
+      position={props.position}
       ref={meshRef}
       scale={1.5}
       onClick={(event) => setActive(!active)}
