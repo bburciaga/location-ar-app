@@ -38,9 +38,9 @@ function Box(props) {
   return (
     <mesh
       rotation={[
-        Math.sin(Box.propTypes.rotation.beta * Math.PI / 90),
-        Math.sin(Box.propTypes.rotation.alpha * Math.PI / 90),
-        Math.sin(0 * Math.PI / 90)
+        Math.sin(Box.propTypes.rotation.beta * Math.PI / 180),
+        Math.sin(Box.propTypes.rotation.alpha * Math.PI / 180),
+        Math.sin(0 * Math.PI / 180)
       ]}
       position={props.position}
       ref={meshRef}
