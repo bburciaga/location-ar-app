@@ -31,7 +31,7 @@ function Box(props) {
   return (
             <mesh
               rotation={[
-                0, props.rotation.alpha, 0
+                0, Math.sin(props.rotation.alpha), 0
               ]}
               position={props.position}
               ref={meshRef}
