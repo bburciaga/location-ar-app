@@ -35,8 +35,8 @@ function Box(props) {
     <mesh
       rotation={[
         props.rotation.beta * Math.PI / 180,
+        0,
         props.rotation.gamma * Math.PI / 180,
-        0
       ]}
       position={props.position}
       ref={meshRef}
