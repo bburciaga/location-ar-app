@@ -23,7 +23,7 @@ function Box(props) {
 
   // Subscribe this component to the render-loop, rotate the mesh every frame
   //useFrame((state, delta) => (meshRef.current.rotation.x += delta)) // Rotation in x axis
-  useFrame((state, delta) => (meshRef.current.rotation.y = props.rotation.alpha)) // Rotation in y axis
+  useFrame((state, delta) => (meshRef.current.rotation.x = props.rotation.alpha)) // Rotation in y axis
   //useFrame((state, delta) => (meshRef.current.position.z = props.position[2]))
   //useFrame((state, delta) => (meshRef.current.position.y = props.position[1]))
         
@@ -93,7 +93,7 @@ export default function Location ({children}) {
         width: '100%',
       height: '100%'}}>
       <br />
-      dist: {coords.distance} m
+      dist: {coords.distance.toFixed(5)} m
     </div>
       <ARCanvas
       position={[0, 0, 0]}
