@@ -82,35 +82,42 @@ export default function Location ({children}) {
 
   return (
     <div style={{position: 'relative',height: '100%', width: '100%'}}>
-      <div style={{
-        lineHeight: '1em',
-        textAlign: 'left',
-        fontSize: '2em',
-        wordBreak: 'break-word',
-        position: 'absolute',
-        top: '0',
-        left: '0',
-        width: '100%',
-      height: '100%'}}>
-      <br />
-      dist: {coords.distance.toFixed(5)} m
-    </div>
-      <ARCanvas
-      position={[0, 0, 0]}
-      gl={{
-        antialias: false,
-        powerPreference: "default",
-        physicallyCorrectLights: true,
-      }}
-        onCreated={({ gl }) => {
-          gl.setSize(window.innerWidth, window.innerHeight)
-        }}>
-        <ambientLight intensity={Math.PI / 2} />
-        <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} decay={0} intensity={Math.PI} />
-        <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI} />
-        <DeviceOrientation>
-          {({ absolute, alpha, beta, gamma }) => {
-            return (
+      <DeviceOrientation>
+        {({ absolute, alpha, beta, gamma }) => (
+          <div>
+            <div style={{
+              lineHeight: '1em',
+              textAlign: 'left',
+              fontSize: '2em',
+              wordBreak: 'break-word',
+              position: 'absolute',
+              top: '0',
+              left: '0',
+              width: '100%',
+              height: '100%'}}>
+              {`Absolute: ${absolute}`}
+              <br />
+              {`Alpha: ${alpha.toFixed(5)}`}
+              <br />
+              {`Beta: ${beta.toFixed(5)}`}
+              <br />
+              {`Gamma: ${gamma.toFixed(5)}`}
+              <br />
+              dist: {coords.distance.toFixed(5)} m
+            </div>
+            <ARCanvas
+              position={[0, 0, 0]}
+              gl={{
+                antialias: false,
+                powerPreference: "default",
+                physicallyCorrectLights: true,
+              }}
+              onCreated={({ gl }) => {
+                gl.setSize(window.innerWidth, window.innerHeight)
+              }}>
+              <ambientLight intensity={Math.PI / 2} />
+              <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} decay={0} intensity={Math.PI} />
+              <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI} />
               <Box 
                 rotation={{alpha: alpha, beta: beta, gamma: gamma}}
                 frustumCulled={false}
@@ -120,10 +127,11 @@ export default function Location ({children}) {
                   -10
                 ]}
                 />
-          )
-        }}
+            </ARCanvas>
+          </div>
+        )}
       </DeviceOrientation>
-      </ARCanvas>
     </div>
   )
 }
+
