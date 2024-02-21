@@ -38,11 +38,11 @@ function Box(props) {
   return (
     <mesh
       rotation={[
-        Math.sin(Box.propTypes.rotation.beta * Math.PI / 90),
-        Math.sin(Box.propTypes.rotation.alpha * Math.PI / 90),
-        Math.sin(0 * Math.PI / 180)
+        Box.propTypes.rotation.beta * Math.PI / 90,
+        Box.propTypes.rotation.alpha * Math.PI / 90,
+        0
       ]}
-      position={props.position}
+      position={Box.propTypes.position}
       ref={meshRef}
       scale={1.5}
       onClick={(event) => setActive(!active)}
