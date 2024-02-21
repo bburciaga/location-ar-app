@@ -101,7 +101,7 @@ export default function Location ({children}) {
               height: '100%'}}>
               {`Absolute: ${absolute}`}
               <br />
-              {`Alpha: ${alpha.toFixed(5)}`}
+              {`Alpha: ${Math.cos(alpha * Math.PI / 180).toFixed(5)}`}
               <br />
               {`Beta: ${beta.toFixed(5)}`}
               <br />
