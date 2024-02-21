@@ -23,13 +23,14 @@ function Box(props) {
 
   // Subscribe this component to the render-loop, rotate the mesh every frame
   //useFrame((state, delta) => (meshRef.current.rotation.x += delta)) // Rotation in x axis
-  useFrame((state, delta) => (meshRef.current.rotation.x = props.rotation.alpha / 360)) // Rotation in y axis
+  //useFrame((state, delta) => (meshRef.current.rotation = new THREE.Euler(Math.PI / props.rotation.alpha, 0, 0))) // Rotation in y axis
   //useFrame((state, delta) => (meshRef.current.rotation.y = props.rotation.gamma)) // Rotation in y axis
   //useFrame((state, delta) => (meshRef.current.position.z = props.position[2]))
   //useFrame((state, delta) => (meshRef.current.position.y = props.position[1]))
         
   return (
             <mesh
+            rotation={[Math.PI / props.rotation.alpha, 0, 0]}
               position={props.position}
               ref={meshRef}
               scale={1.5}
