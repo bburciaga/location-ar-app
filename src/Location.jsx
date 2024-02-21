@@ -31,7 +31,7 @@ function Box(props) {
   return (
             <mesh
               rotation={[
-                0, Math.sin(props.rotation.alpha), 0
+                0, Math.cos(props.rotation.alpha * Math.PI / 180), 0
               ]}
               position={props.position}
               ref={meshRef}
@@ -101,7 +101,7 @@ export default function Location ({children}) {
               height: '100%'}}>
               {`Absolute: ${absolute}`}
               <br />
-              {`Alpha: ${Math.sin(alpha.toFixed(5))}`}
+              {`Alpha: ${alpha.toFixed(5)}`}
               <br />
               {`Beta: ${beta.toFixed(5)}`}
               <br />
