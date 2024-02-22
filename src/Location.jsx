@@ -5,15 +5,19 @@ import ARCanvas from './ar/ARCanvas'
 import { calculateDistance } from './utils/geometry'
 import { useDeviceOrientation } from './orientation/useDeviceOrientation';
 import useTimeout from './hooks/useTimeout'
-import handleOrientation from './utils/orientation'
-import useGyroscope from 'react-hook-gyroscope'
 import DeviceOrientation from 'react-device-orientation'
 
-import * as merc from 'mercator-projection'
-
 /**
- * @param {Object} has properties rotation and position
-*/
+ * Renders a 3D box mesh in the scene with dynamic behavior. The component allows the box to be interactively
+ * rotated and positioned based on provided props. It uses React Three Fiber's useFrame for potential
+ * real-time updates to its rotation and position, demonstrating how to integrate interactive 3D elements
+ * with user input or external data. The box changes color when hovered and toggles its 'active' state on click.
+ *
+ * @param {Object} props - Contains properties to control the box's appearance and behavior.
+ * @param {Object} props.rotation - An object with alpha and beta properties representing the rotation angles in degrees.
+ *                                  Alpha controls the rotation around the z-axis, and beta controls the rotation around the x-axis.
+ * @param {Array} props.position - An array representing the box's position in 3D space as [x, y, z].
+ */
 function Box(props) {
   // This reference will give us direct access to the mesh
   const meshRef = useRef()
@@ -50,7 +54,20 @@ function Box(props) {
   )
 }
 
-
+/**
+ * The Location component is responsible for integrating geolocation data with augmented reality (AR) content. 
+ * It initializes the user's geolocation and updates the state based on changes in the user's position. 
+ * This component uses the HTML Geolocation API to periodically fetch the current position of the device and calculates
+ * the distance moved from an initial position. It then visualizes this information alongside device orientation data
+ * within an AR environment, using React Three Fiber's ARCanvas and a custom Box component for rendering.
+ * The component displays the device's orientation (alpha, beta, gamma) and the calculated distance from the initial position.
+ * It utilizes a custom hook, useTimeout, to periodically update the geolocation data and recalculate distances.
+ * Children components can access and utilize the device's orientation and calculated position for rendering or other purposes,
+ * making this component a foundational part of creating interactive, location-aware AR experiences.
+ *
+ * @param {Object} props - Contains properties and children for the component.
+ * @param {ReactNode} props.children - React children that can be AR content or any other elements to be rendered within the Location component.
+ */
 export default function Location ({children}) {
   const [initialized, setInitialized] = React.useState(false)
   const [initialPos, setInitialPos] = React.useState({lat: 0, lng: 0})
