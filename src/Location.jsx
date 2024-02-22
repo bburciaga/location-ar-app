@@ -106,11 +106,11 @@ export default function Location ({children}) {
               height: '100%'}}>
               {`Absolute: ${absolute}`}
               <br />
-              {`Alpha: ${alpha.toFixed(5)}`}
+              {`Alpha: ${alpha ? alpha.toFixed(5) : 0}`}
               <br />
-              {`Beta: ${beta.toFixed(5)}`}
+              {`Beta: ${beta ? beta.toFixed(5) : 0}`}
               <br />
-              {`Gamma: ${gamma.toFixed(5)}`}
+              {`Gamma: ${gamma ? gamma.toFixed(5) : 0}`}
               <br />
               dist: {coords.distance.toFixed(5)} m
             </div>
