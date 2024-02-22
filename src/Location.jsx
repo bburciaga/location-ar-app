@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect} from 'react'
 import {useFrame} from '@react-three/fiber'
 
 import ARCanvas from './ar/ARCanvas'
@@ -24,9 +24,14 @@ function Box(props) {
   const [hovered, setHover] = useState(false)
   const [active, setActive] = useState(true)
 
-  React.useEffect(() => {
+  // Dynamically update position based on alpha and beta
+  useEffect(() => {
+    if (meshRef.current) {
+      meshRef.current.position.x = Math.sin(props.rotation.alpha * (Math.PI / 180)) * 2;
+      meshRef.current.position.z = Math.cos(props.rotation.beta * (Math.PI / 180)) * 2;
+    }
     //console.log(meshRef.current)
-  }, [meshRef])
+  }, [props.rotation])
 
   // Subscribe this component to the render-loop, rotate the mesh every frame
   //useFrame((state, delta) => (meshRef.current.rotation.x += delta)) // Rotation in x axis
@@ -45,9 +50,9 @@ function Box(props) {
       position={props.position}
       ref={meshRef}
       scale={1.5}
-      onClick={(event) => setActive(!active)}
-      onPointerOver={(event) => setHover(true)}
-      onPointerOut={(event) => setHover(false)}>
+      onClick={() => setActive(!active)}
+      onPointerOver={() => setHover(true)}
+      onPointerOut={() => setHover(false)}>
       <boxGeometry args={[1, 1, 1]} />
       <meshStandardMaterial color={hovered ? 'hotpink' : 'orange'} />
     </mesh>
@@ -69,11 +74,11 @@ function Box(props) {
  * @param {ReactNode} props.children - React children that can be AR content or any other elements to be rendered within the Location component.
  */
 export default function Location ({children}) {
-  const [initialized, setInitialized] = React.useState(false)
-  const [initialPos, setInitialPos] = React.useState({lat: 0, lng: 0})
-  const [coords, setCoords] = React.useState({x: 0, z: 0, distance: 0})
+  const [initialized, setInitialized] = useState(false)
+  const [initialPos, setInitialPos] = useState({lat: 0, lng: 0})
+  const [coords, setCoords] = useState({x: 0, z: 0, distance: 0})
 
-  React.useEffect(() => {
+  useEffect(() => {
     console.log('Initial Position',initialPos)
   }, [initialPos])
 
@@ -148,9 +153,9 @@ export default function Location ({children}) {
                 rotation={{alpha: alpha, beta: beta, gamma: gamma}}
                 frustumCulled={false}
                 position={[
-                  0,
+                  coords.x,
                   0, // DO NOT CHANGE
-                  -10
+                  coords.z
                 ]}
                 />
             </ARCanvas>
