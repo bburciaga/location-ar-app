@@ -153,9 +153,9 @@ export default function Location ({children}) {
                 rotation={{alpha: alpha, beta: beta, gamma: gamma}}
                 frustumCulled={false}
                 position={[
-                  coords.x,
+                  0,
                   0, // DO NOT CHANGE
-                  coords.z
+                  -10
                 ]}
                 />
             </ARCanvas>
