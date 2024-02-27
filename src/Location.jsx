@@ -26,12 +26,8 @@ function Box(props) {
 
   // Dynamically update position based on alpha and beta
   useEffect(() => {
-    if (meshRef.current) {
-      meshRef.current.position.x = Math.sin(props.rotation.alpha * (Math.PI / 180)) * 2;
-      meshRef.current.position.z = Math.cos(props.rotation.beta * (Math.PI / 180)) * 2;
-    }
     //console.log(meshRef.current)
-  }, [props.rotation])
+  }, [meshRef])
 
   // Subscribe this component to the render-loop, rotate the mesh every frame
   //useFrame((state, delta) => (meshRef.current.rotation.x += delta)) // Rotation in x axis
