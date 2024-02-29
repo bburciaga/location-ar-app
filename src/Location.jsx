@@ -28,8 +28,8 @@ function Box(props) {
     //console.log(meshRef.current)
   }, [meshRef])
 
-  useFrame((state, delta) => (meshRef.current.rotation.z += props.rotation.gamma)) // Rotation in y axis
-  useFrame((state, delta) => (meshRef.current.position.x += props.rotation.beta))
+  useFrame((state, delta) => (meshRef.current.position.z += props.rotation.gamma * Math.PI / 180)) // Rotation in y axis
+  useFrame((state, delta) => (meshRef.current.position.x += props.rotation.beta * Math.PI / 180))
         
   return (
     <mesh
