@@ -1,9 +1,8 @@
-import React, { useRef, useState, useEffect} from 'react'
-import {useFrame} from '@react-three/fiber'
+import { useRef, useState, useEffect} from 'react'
+//import {useFrame} from '@react-three/fiber'
 
 import ARCanvas from './ar/ARCanvas'
 import { calculateDistance } from './utils/geometry'
-import { useDeviceOrientation } from './orientation/useDeviceOrientation';
 import useTimeout from './hooks/useTimeout'
 import DeviceOrientation from 'react-device-orientation'
 

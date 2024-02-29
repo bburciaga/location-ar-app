@@ -16,11 +16,9 @@
     "@ar-js-org/ar.js": "^3.4.5",
     "@react-three/fiber": "^8.15.16",
     "@types/three": "^0.161.2",
-    "mercator-projection": "^0.0.2",
     "react": "^18.2.0",
     "react-device-orientation": "^0.1.0",
     "react-dom": "^18.2.0",
-    "react-hook-gyroscope": "^1.1.12",
     "three": "^0.161.0"
   },
   "devDependencies": {
