@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect} from 'react'
-//import {useFrame} from '@react-three/fiber'
+import {useFrame} from '@react-three/fiber'
 
 import ARCanvas from './ar/ARCanvas'
 import { calculateDistance } from './utils/geometry'
