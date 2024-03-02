@@ -140,7 +140,7 @@ export default function Location ({children}) {
                 frustumCulled={false}
                 position={[
                   0,
-                  0, // DO NOT CHANGE
+                  90, // DO NOT CHANGE
                   -10
                 ]}
                 />
