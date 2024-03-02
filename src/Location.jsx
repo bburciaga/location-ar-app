@@ -29,7 +29,7 @@ function Box(props) {
   }, [meshRef])
 
   //useFrame((state, delta) => (meshRef.current.rotation.z += props.rotation.gamma)) // Rotation in y axis
-  useFrame((state, delta) => (meshRef.current.position.y = props.rotation.beta)) 
+  useFrame((state, delta) => (meshRef.current.position.y = -1 *props.rotation.beta)) 
 
   return (
     <mesh
@@ -140,7 +140,7 @@ export default function Location ({children}) {
                 frustumCulled={false}
                 position={[
                   0,
-                  90, // DO NOT CHANGE
+                  0, // DO NOT CHANGE
                   -10
                 ]}
                 />
