@@ -30,8 +30,8 @@ function Box(props) {
 
   const alpha = props.rotation.alpha > 180 ? 180 - props.rotation.alpha : props.rotation.alpha
 
-  useFrame((state, delta) => (meshRef.current.position.y = -1 * props.rotation.beta + 90)) // Rotation in y axis
-  useFrame((state, delta) => (meshRef.current.position.x = alpha)) 
+  //  useFrame((state, delta) => (meshRef.current.position.y = -1 * props.rotation.beta + 90)) // Rotation in y axis
+  //useFrame((state, delta) => (meshRef.current.position.x = alpha)) 
 
   return (
     <mesh
@@ -79,17 +79,17 @@ export default function Location ({children}) {
           setInitialized(true)
         } else {
           // distance in lat exlusively
-          const d1 = calculateDistance(
+          const x = calculateDistance(
             { lat: latitude, lng: longitude },
             { lat: initialPos.lat, lng: longitude }
           )
-          const d2 = calculateDistance(
+          const y = calculateDistance(
             { lat: latitude, lng: longitude },
             { lat: latitude, lng: initialPos.lng }
           )
           // distance in lng exclusively
           const d = calculateDistance(initialPos, {lat: latitude, lng: longitude})
-          setCoords({x: d1, z: -1 * d2, distance: -1 * d})
+          setCoords({x: x, z: -1 * y, distance: -1 * d})
         }
       } catch (_e) {
         console.log(_e)
@@ -134,9 +134,11 @@ export default function Location ({children}) {
               onCreated={({ gl }) => {
                 gl.setSize(window.innerWidth, window.innerHeight)
               }}>
+
               <ambientLight intensity={Math.PI / 2} />
               <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} decay={0} intensity={Math.PI} />
               <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI} />
+
               <Box 
                 rotation={{alpha: alpha, beta: beta, gamma: gamma}}
                 frustumCulled={false}
@@ -146,6 +148,7 @@ export default function Location ({children}) {
                   -10
                 ]}
                 />
+
             </ARCanvas>
           </div>
         )}
