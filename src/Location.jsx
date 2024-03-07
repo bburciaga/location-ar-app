@@ -28,7 +28,7 @@ function Box(props) {
     //console.log(meshRef.current)
   }, [meshRef])
 
-  const alpha = props.rotation.alpha > 180 ? 180 - props.rotation.alpha : props.rotation.alpha
+  //const alpha = props.rotation.alpha > 180 ? 180 - props.rotation.alpha : props.rotation.alpha
 
   //  useFrame((state, delta) => (meshRef.current.position.y = -1 * props.rotation.beta + 90)) // Rotation in y axis
   //useFrame((state, delta) => (meshRef.current.position.x = alpha)) 
