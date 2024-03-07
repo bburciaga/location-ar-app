@@ -114,8 +114,6 @@ export default function Location ({children}) {
               left: '0',
               width: '100%',
               height: '100%'}}>
-              {`Marker: ${initialPos.lat.toFixed(1)} ${initialPos.lng.toFixed(1)}`}
-              {`Pos: ${coords.lat.toFixed(1)} ${coords.lng.toFixed(1)}`}
               <br />
               {`Alpha: ${alpha ? alpha.toFixed(5) : 0}`}
               <br />
