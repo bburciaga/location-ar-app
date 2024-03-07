@@ -79,17 +79,17 @@ export default function Location ({children}) {
           setInitialized(true)
         } else {
           // distance in lat exlusively
-          const x = calculateDistance(
+          /*const x = calculateDistance(
             { lat: latitude, lng: longitude },
             { lat: initialPos.lat, lng: longitude }
           )
           const y = calculateDistance(
             { lat: latitude, lng: longitude },
             { lat: latitude, lng: initialPos.lng }
-          )
+          )*/
           // distance in lng exclusively
           const d = calculateDistance(initialPos, {lat: latitude, lng: longitude})
-          setCoords({x: x, z: -1 * y, distance: -1 * d})
+          setCoords({lat: latitude, longitude: longitude, distance: d})
         }
       } catch (_e) {
         console.log(_e)
