@@ -145,7 +145,7 @@ export default function Location ({children}) {
                 position={[
                   0,
                   0, // DO NOT CHANGE
-                  coords.distance.toFixed(2)
+                  coords.distance
                 ]}
                 />
 
