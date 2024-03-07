@@ -89,7 +89,7 @@ export default function Location ({children}) {
           )*/
           // distance in lng exclusively
           const d = calculateDistance(initialPos, {lat: latitude, lng: longitude})
-          setCoords({lat: latitude, longitude: longitude, distance: d})
+          setCoords({lat: latitude, lng: longitude, distance: d})
         }
       } catch (_e) {
         console.log(_e)
@@ -114,7 +114,8 @@ export default function Location ({children}) {
               left: '0',
               width: '100%',
               height: '100%'}}>
-              {`Pos: ${coords.lat} ${coords.lng}`}
+              {`Marker: ${initialPos.lat.toFixed(1)} ${initialPos.lng.toFixed(1)}`}
+              {`Pos: ${coords.lat.toFixed(1)} ${coords.lng.toFixed(1)}`}
               <br />
               {`Alpha: ${alpha ? alpha.toFixed(5) : 0}`}
               <br />
