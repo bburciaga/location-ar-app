@@ -114,7 +114,7 @@ export default function Location ({children}) {
               left: '0',
               width: '100%',
               height: '100%'}}>
-              {`Absolute: ${absolute}`}
+              {`Pos: ${coords.lat} ${coords.lng}`}
               <br />
               {`Alpha: ${alpha ? alpha.toFixed(5) : 0}`}
               <br />
