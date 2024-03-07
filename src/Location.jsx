@@ -89,7 +89,7 @@ export default function Location ({children}) {
           )*/
           // distance in lng exclusively
           const d = calculateDistance(initialPos, {lat: latitude, lng: longitude})
-          setCoords({lat: latitude, lng: longitude, distance: d})
+          setCoords({lat: latitude, lng: longitude, distance: -1 * d})
         }
       } catch (_e) {
         console.log(_e)
@@ -121,7 +121,7 @@ export default function Location ({children}) {
               <br />
               {`Gamma: ${gamma ? gamma.toFixed(5) : 0}`}
               <br />
-              dist: {coords.distance.toFixed(5)} m
+              dist: {coords.distance.toFixed(1)} m
             </div>
             <ARCanvas
               position={[0, 0, 0]}
